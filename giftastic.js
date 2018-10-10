@@ -1,0 +1,201 @@
+var topics = ["Japan", "Thailand", "Philippines", "China", "Taiwan", "India"]
+      function renderButtons(){
+        console.log('running renderButtons')
+
+        $('#buttonsContainer').empty();
+        for (var i = 0; i < topics.length; i++){
+        var button = $("<button>");
+          button.addClass("gif");
+          button.attr("data-name", topics[i]);
+
+          button.text(topics[i]);
+          $("#buttonsContainer").append(button);
+        }
+
+    $("button").on("click", function(data) {
+      console.log('running button click')
+      $("#gifsContainer").empty();
+      //create button for each topic with same value to search
+      var friend = $(this).attr("data-name").trim();
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        friend + "&api_key=Hvy77q2c1SLYGjFkI2JfnXhSeJoUaHiV";
+
+      console.log('queryURL:', queryURL)
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        var results = response.data;
+
+        for (var i = 0; i < 10; i++) {
+            var friendDiv = $("<div />");
+            var img = $("<img />");
+            img.attr("src", results[i].images.fixed_height_still.url);
+            img.attr("status", 'still');
+            img.attr('animatedSource', results[i].images.fixed_height.url);
+            img.attr('stillSource', results[i].images.fixed_height_still.url);
+
+            img.addClass('gif');
+            var rating = results[i].rating;
+            var p = $("<p/>").text("Rating: " + rating);
+
+            friendDiv.append(img);
+            friendDiv.append(p);
+
+            $("#gifsContainer").prepend(friendDiv)
+        };
+
+        $("img").on("click", function() {
+            var state = $(this).attr("status")
+      
+            if(state === "still") {
+              $(this).attr("status", "animate")
+              $(this).attr("src", $(this).attr("animatedSource"))
+            }
+      
+            if(state === "animate") {
+              $(this).attr("status", "still")
+              $(this).attr("src", $(this).attr("stillSource"))
+            }
+          });
+
+       });
+        
+    });
+      }
+
+      $("#submitButton").on("click", function(event){
+        event.preventDefault();
+        console.log('running submitbutton')
+        $("#gifsContainer").empty();
+        var userInput = $("#user-input").val().trim(); 
+        topics.push(userInput);
+        $("#user-input").val("")
+        renderButtons();
+      });
+
+      renderButtons();
+
+
+
+Collapse 
+
+7:35 PM
+html
+index.html 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Asia Gifs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type= "text/css a href="assets/css/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+</head>
+
+<body>
+  <div class="logo">
+    <img src = "https://en.wikipedia.org/wiki/Japan#/media/File:Japan_(orthographic_projection).svg" alt = "asia logo" class = "center">
+  </div>
+
+  <div class ="mainContainer">
+        <form id= "user-form">
+          <label for="user-input">Search other gifs:</label>
+          <input type="text" id="user-input"><br>
+          <input id="submitButton" type="submit" value="Make new button">
+        </form>
+        
+        <div id= "buttonsContainer"></div>
+        <div id="gifsContainer"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript">
+      
+    var topics = ["Japan", "Thailand", "Philippines", "China", "Taiwan", "India"]
+      function renderButtons(){
+        console.log('running renderButtons')
+
+        $('#buttonsContainer').empty();
+        for (var i = 0; i < topics.length; i++){
+        var button = $("<button>");
+          button.addClass("gif");
+          button.attr("data-name", topics[i]);
+
+          button.text(topics[i]);
+          $("#buttonsContainer").append(button);
+        }
+
+    $("button").on("click", function(data) {
+      console.log('running button click')
+      $("#gifsContainer").empty();
+      //create button for each topic with same value to search
+      var friend = $(this).attr("data-name").trim();
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        friend + "&api_key=Hvy77q2c1SLYGjFkI2JfnXhSeJoUaHiV";
+
+      console.log('queryURL:', queryURL)
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        var results = response.data;
+
+        for (var i = 0; i < 10; i++) {
+            var friendDiv = $("<div />");
+            var img = $("<img />");
+            img.attr("src", results[i].images.fixed_height_still.url);
+            img.attr("status", 'still');
+            img.attr('animatedSource', results[i].images.fixed_height.url);
+            img.attr('stillSource', results[i].images.fixed_height_still.url);
+
+            img.addClass('gif');
+            var rating = results[i].rating;
+            var p = $("<p/>").text("Rating: " + rating);
+
+            friendDiv.append(img);
+            friendDiv.append(p);
+
+            $("#gifsContainer").prepend(friendDiv)
+        };
+
+        $("img").on("click", function() {
+            var state = $(this).attr("status")
+      
+            if(state === "still") {
+              $(this).attr("status", "animate")
+              $(this).attr("src", $(this).attr("animatedSource"))
+            }
+      
+            if(state === "animate") {
+              $(this).attr("status", "still")
+              $(this).attr("src", $(this).attr("stillSource"))
+            }
+          });
+
+       });
+        
+    });
+      }
+
+      $("#submitButton").on("click", function(event){
+        event.preventDefault();
+        console.log('running submitbutton')
+        $("#gifsContainer").empty();
+        var userInput = $("#user-input").val().trim(); 
+        topics.push(userInput);
+        $("#user-input").val("")
+        renderButtons();
+      });
+
+      renderButtons();
+  </script>
+</body>
+
+</html>
+
+
+
+
